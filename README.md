@@ -4,7 +4,7 @@
 Under MIT license.
 
 ```javascript
-npm install -S env-loader
+npm install -S dotenv-loader
 ```
 
 ##Load environments

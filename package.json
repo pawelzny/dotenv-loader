@@ -1,10 +1,18 @@
 {
-  "name": "env-loader",
+  "name": "dotenv-loader",
   "version": "1.0.0",
   "description": "Load environment variables from .env file, and set to process.env Array.",
-  "main": "env-loader.js",
+  "author": "Paweł Zadrożny <pawel.zny@gmail.com> (http://pawelzny.com/npm/env)",
   "scripts": {
     "test": "mocha"
+  },
+  "main": "dotenv-loader.js",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/pawelzny/dotenv-loader"
+  },
+  "bugs": {
+    "url": "https://github.com/pawelzny/dotenv-loader/issues"
   },
   "keywords": [
     "env",
@@ -16,15 +24,13 @@
     "settings",
     "config"
   ],
-  "readmeFilename": "README.md",
-  "author": "Paweł Zadrożny <pawel.zny@gmail.com> (http://pawelzny.com/npm/env)",
-  "license": "MIT",
   "engine": "node >= 6.2.0",
+  "dependencies": {
+    "typer": "^1.1.0"
+  },
   "devDependencies": {
     "chai": "^3.5.0",
     "mocha": "^2.5.3"
   },
-  "dependencies": {
-    "typer": "^1.1.0"
-  }
+  "license": "MIT"
 }

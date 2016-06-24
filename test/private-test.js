@@ -1,7 +1,7 @@
 'use strict';
 
 const
-    env = require('../env-loader'),
+    env = require('../dotenv-loader'),
     chai = require('chai'),
     assert = chai.assert;
 
