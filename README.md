@@ -36,7 +36,7 @@ const
         file: "./other/path/to/.env", // default: .env
         encoding: "unicode" // default: utf8
     },
-    env = require('env-loader');
+    env = require('dotenv-loader');
 
 env.load(optionalSettings); // There you go. Your environment variables are now available globally.
 ```
@@ -54,7 +54,7 @@ To get environment value (node predefine included):
 
 ```javascript
 const
-    env = require('env-loader'),
+    env = require('dotenv-loader'),
     myVariable = env.get('WELCOME_MSG', 'Or default value if WELCOME_MSG is not set');
 
 console.log(myVariable); // Hi there!
