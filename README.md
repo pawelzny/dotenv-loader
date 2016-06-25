@@ -1,4 +1,4 @@
-#Env-loader
+#Dotenv-loader
 
 **Load environment variables from .env file, and set to process.env Array.**
 Under MIT license.
@@ -9,11 +9,16 @@ npm install -S dotenv-loader
 
 ##Load environments
 
+`env.load([options]);`
+
+* options `<Object>` An optional object with `file` and `encoding` propertis
+
+###Usage
+
 * Create .env file in your project root directory,
 * Your .env file should contain key=variable pairs, one in a row,
 
-*example:*
-
+*Example:*
 ```javascript
 THROW_ERROS=false
 PAGE_ELEMENTS=100
@@ -38,12 +43,19 @@ env.load(optionalSettings); // There you go. Your environment variables are now 
 
 ##Get environments
 
+`env.get(key[, default][, callback]);`
+* key `<String>` environment variable key
+* default `<String>` an optional default value if variable was not set
+* callback `<Function>` an optional callback function as last parameter
+
+###Usage
+
 To get environment value (node predefine included):
 
 ```javascript
 const
     env = require('env-loader'),
-    myVariable = env.get('WELCOME_MSG', 'Or default value if MY_VARIABLE is not set');
+    myVariable = env.get('WELCOME_MSG', 'Or default value if WELCOME_MSG is not set');
 
 console.log(myVariable); // Hi there!
 ```
@@ -58,12 +70,13 @@ All your variable keys will be normalized to uppercase, but when you use env.get
 
 You can pass callback function as last parameter. It will be called asynchronously, and still return a value.
 
-```javascritp
-let val = env.get('THIS_DO_NOT_EXISTS', 'default value', function (val, key, defaults) {
-    if (val === null) {
-        throw Error('Env variable not exists');
-    }
-}); // throws [Error: Env variable not exists']
+```javascript
+let
+    val = env.get('THIS_DO_NOT_EXISTS', function (val, key, defaults) {
+        if (val === null) {
+            throw Error('Env variable not exists');
+        }
+    }); // throws [Error: Env variable not exists']
 ```
 
 Callback function takes three parameters:
