@@ -1,6 +1,6 @@
 {
   "name": "dotenv-loader",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "description": "Load environment variables from .env file, and set to process.env Array.",
   "author": "Paweł Zadrożny <pawel.zny@gmail.com> (http://pawelzny.com/npm/env)",
   "scripts": {
