@@ -3,13 +3,16 @@
 const
     env = require('../dotenv-loader'),
     chai = require('chai'),
-    assert = chai.assert;
+    assert = chai.assert,
+    sinon = require('sinon');
 
-env.load({file: "./test/.test-env"});
+describe('dotenv-loader interface', () => {
+    beforeEach(() => {
+        env.load({file: "./test/.test-env"});
+    });
 
-describe('env-loader public interface', () => {
     describe("#load()", () => {
-        it('should load .env file and assign to global process.env Array', () => {
+        it('should load .env file and assign to process.env', () => {
             assert.isDefined(process.env['TEST_BOOLEAN_TRUE']);
             assert.isDefined(process.env['TEST_BOOLEAN_FALSE']);
             assert.isDefined(process.env['TEST_NUMBER']);
@@ -17,67 +20,70 @@ describe('env-loader public interface', () => {
             assert.isDefined(process.env['TEST_NULL']);
             assert.isDefined(process.env['TEST_NOT_SET']);
         });
+
+        it('should emit error event when failed to load .env file', () => {
+            env.load().on('error', (err) => {
+                assert.isDefined(err);
+            });
+        });
     });
 
   describe('#get()', () => {
-    it('should return boolean (true) value from parsed .env', () => {
+    it('should parse .env and return value type of Boolean (true)', () => {
         assert.isTrue(env.get('TEST_BOOLEAN_TRUE'));
         assert.isTrue(env.get('test_boolean_true'));
     });
 
-    it('should return boolean (false) value from parsed .env', () => {
+    it('should parse .env and return value type of Boolean (false)', () => {
         assert.isFalse(env.get('TEST_BOOLEAN_FALSE'));
         assert.isFalse(env.get('test_boolean_false'));
     });
 
-    it('should return number value from parsed .env', () => {
+    it('should parse .env and return value type of Number', () => {
         assert.isNumber(env.get('TEST_NUMBER'));
         assert.isNumber(env.get('test_number'));
     });
 
-    it('should return string value from parsed .env', () => {
+    it('should parse .env and return value type of String', () => {
         assert.equal("this is test string", env.get('TEST_STRING'));
         assert.equal("this is test string", env.get('test_string'));
     });
 
-    it('should return null when value is "undefined" string', () => {
+    it('should parse .env and return value type of Null when value was set to "undefined"', () => {
         assert.isNull(env.get('TEST_UNDEFINED'));
         assert.isNull(env.get('test_undefined'));
     });
 
-    it('should return null value from parsed .env', () => {
+    it('should parse .env and return value type of Null when value was set to "null"', () => {
         assert.isNull(env.get('TEST_NULL'));
         assert.isNull(env.get('test_null'));
     });
 
-    it('should return null value when none was set in .env file', () => {
+    it('should parse .env and return value type of Null when value has not been set', () => {
         assert.isNull(env.get('TEST_NOT_SET'));
         assert.isNull(env.get('test_not_set'));
     });
 
-    it('should return default value when none was set in .env file', () => {
-        assert.equal('default', env.get('TEST_NOT_SET', 'default'));
+    it('should parse .env and return default value when value has not been set', () => {
+        let
+            defaultVal = env.get('TEST_NOT_SET', 'default');
+
+        assert.equal('default', defaultVal);
     });
 
-    it('should throw an error when value is not define in .env file', () => {
+    it('should throw an error when value has not been set', () => {
         try {
-            env.get('THIS_DO_NOT_EXISTS', 'default value', function () {
-                throw Error('Env variable not exists');
+            env.get('THIS_DO_NOT_EXISTS', function (val, key, defaults) {
+                if (val === null) {
+                    throw Error('Env variable not exists');
+                }
             });
         } catch (err) {
             assert.equal('Error: Env variable not exists', err);
         }
     });
 
-    it('should not throw an error when value exists', () => {
-        let number = env.get('TEST_NUMBER', 'default value', function () {
-            throw Error('Env variable not exists');
-        });
-
-        assert.isDefined(number);
-    });
-
-    it('should run callback even if value exists, and then returns value', () => {
+    it('should run the callback asynchronously and return value synchronously', () => {
         let
             expectedNumber = 100,
             testKey = 'TEST_NUMBER',
@@ -92,8 +98,19 @@ describe('env-loader public interface', () => {
         assert.equal(expectedNumber, number);
     });
 
-    it('should not run callback if last parameter is not a function', () => {
+    it('should not run any callback if last parameter is not a function', () => {
         env.get('TEST_NUMBER', 'default', true);
+    });
+
+    it('should run the callback once if last parameter is a function', () => {
+        let
+            callbackSpy = sinon.spy();
+
+        env.get('TEST_KEY', function () {
+            callbackSpy();
+        });
+
+        assert.isTrue(callbackSpy.calledOnce);
     });
   });
 });

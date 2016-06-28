@@ -3,6 +3,7 @@
 const
     fs = require('fs'),
     typer = require('typer'),
+    EventEmitter = require('events'),
     defaults = {
         file: ".env",
         encoding: "utf8"
@@ -17,12 +18,15 @@ module.exports = {load, get, __private: {_setProcessEnv, _setSettings, _readEnvF
  */
 function load (options) {
     let
-        settings = _setSettings(options);
+        settings = _setSettings(options),
+        event = new EventEmitter();
 
     try {
         _readEnvFile(settings).forEach(_setProcessEnv);
     } catch (err) {
-        console.log('.env file load and parse fatal error \n', err);
+        event.emit('error', err);
+    } finally {
+        return event;
     }
 }
 
@@ -37,9 +41,9 @@ function get (key, defaults) {
     let
         val = process.env[key.toUpperCase()],
         envType = typer.detect(val),
-        callback = arguments[-1];
+        callback = arguments[arguments.length - 1];
 
-    if (typer.detect(callback) === 'function') {
+    if (typeof callback === 'function') {
         callback(val, key, defaults);
     }
     return val ? typer.cast(val, envType) : defaults || null;

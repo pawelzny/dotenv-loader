@@ -5,9 +5,9 @@ const
     chai = require('chai'),
     assert = chai.assert;
 
-describe('env-loader private methods', () => {
+describe('dotenv-loader private methods', () => {
     describe("#_setSettings()", () => {
-        it('Should return merged settings object with default values', () => {
+        it('should return object with only default values', () => {
             let settings = env.__private._setSettings();
 
             assert.isDefined(settings.file);
@@ -17,10 +17,10 @@ describe('env-loader private methods', () => {
             assert.equal('utf8', settings.encoding);
         });
 
-        it('Should return merged settings object with custom values', () => {
+        it('should return object with custom values', () => {
             let
                 options = {
-                    file: "test-env",
+                    file: ".test-env",
                     encoding: "unicode"
                 },
                 settings = env.__private._setSettings(options);
@@ -28,13 +28,13 @@ describe('env-loader private methods', () => {
             assert.isDefined(settings.file);
             assert.isDefined(settings.encoding);
 
-            assert.equal('test-env', settings.file);
+            assert.equal('.test-env', settings.file);
             assert.equal('unicode', settings.encoding);
         });
     });
 
     describe("#_readEnvFile()", () => {
-        it('Should return array with data rows from .env file', () => {
+        it('should return array with keys and values split on rows', () => {
             let
                 options = {
                     file: "./test/.test-env",
@@ -49,7 +49,7 @@ describe('env-loader private methods', () => {
     });
 
     describe("#_setProcessEnv", () => {
-        it('Should set given value to process environmant array', () => {
+        it('should assign key / value pair to process.env array', () => {
             let
                 row = "ROW_TEST_ENV=works fine";
 
@@ -57,6 +57,20 @@ describe('env-loader private methods', () => {
 
             assert.isDefined(process.env['ROW_TEST_ENV']);
             assert.equal('works fine', process.env['ROW_TEST_ENV']);
+        });
+
+        it('should overwrite key / value pair in process.env array', () => {
+            let
+                key = "ROW_TEST_ENV",
+                before = 'before overwrite',
+                after = 'after overwrite I am different!',
+                setRow = `${key}=${after}`;
+
+            process.env[key] = before;
+            assert.equal(before, process.env[key]);
+
+            env.__private._setProcessEnv(setRow);
+            assert.equal(after, process.env[key]);
         });
     });
 });
