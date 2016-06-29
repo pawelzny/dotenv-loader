@@ -1,14 +1,14 @@
 <!doctype html>
 <html lang="en">
 <head>
-    <title>Code coverage report for dotenv-parser/dotenv-loader.js</title>
+    <title>Code coverage report for dotenv-parser/lib/dotenv-lib.js</title>
     <meta charset="utf-8" />
-    <link rel="stylesheet" href="../prettify.css" />
-    <link rel="stylesheet" href="../base.css" />
+    <link rel="stylesheet" href="../../prettify.css" />
+    <link rel="stylesheet" href="../../base.css" />
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <style type='text/css'>
         .coverage-summary .sorter {
-            background-image: url(../sort-arrow-sprite.png);
+            background-image: url(../../sort-arrow-sprite.png);
         }
     </style>
 </head>
@@ -16,28 +16,28 @@
 <div class='wrapper'>
   <div class='pad1'>
     <h1>
-      <a href="../index.html">all files</a> / <a href="index.html">dotenv-parser/</a> dotenv-loader.js
+      <a href="../../index.html">all files</a> / <a href="index.html">dotenv-parser/lib/</a> dotenv-lib.js
     </h1>
     <div class='clearfix'>
       <div class='fl pad1y space-right2'>
         <span class="strong">100% </span>
         <span class="quiet">Statements</span>
-        <span class='fraction'>13/13</span>
+        <span class='fraction'>10/10</span>
       </div>
       <div class='fl pad1y space-right2'>
         <span class="strong">100% </span>
         <span class="quiet">Branches</span>
-        <span class='fraction'>6/6</span>
-      </div>
-      <div class='fl pad1y space-right2'>
-        <span class="strong">100% </span>
-        <span class="quiet">Functions</span>
         <span class='fraction'>2/2</span>
       </div>
       <div class='fl pad1y space-right2'>
         <span class="strong">100% </span>
+        <span class="quiet">Functions</span>
+        <span class='fraction'>3/3</span>
+      </div>
+      <div class='fl pad1y space-right2'>
+        <span class="strong">100% </span>
         <span class="quiet">Lines</span>
-        <span class='fraction'>13/13</span>
+        <span class='fraction'>10/10</span>
       </div>
     </div>
   </div>
@@ -96,26 +96,18 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">1×</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">1×</span>
-<span class="cline-any cline-yes">15×</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">15×</span>
-<span class="cline-any cline-yes">15×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">1×</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">15×</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">17×</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -125,61 +117,69 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">1×</span>
-<span class="cline-any cline-yes">19×</span>
+<span class="cline-any cline-yes">16×</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">19×</span>
-<span class="cline-any cline-yes">3×</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">19×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-yes">114×</span>
+<span class="cline-any cline-yes">100×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">100×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">'use strict';
 &nbsp;
 const
-    lib = require('./lib/dotenv-lib'),
-    typer = require('typer'),
-    EventEmitter = require('events');
+    fs = require('fs'),
+    defaults = {
+        file: ".env",
+        encoding: "utf8"
+    };
 &nbsp;
-module.exports = {load, get};
+module.exports = {setProcessEnv, setSettings, readEnvFile};
 &nbsp;
 /**
- * Load .env file and add key/value pairs to global process.env array
+ * Set settings Object before env parse.
  *
  * @param {Object} options
+ * @returns {Object} settings
  */
-function load (options) {
-    let
-        settings = lib.setSettings(options),
-        event = new EventEmitter();
-&nbsp;
-    try {
-        lib.readEnvFile(settings).forEach(lib.setProcessEnv);
-    } catch (err) {
-        event.emit('error', err);
-    } finally {
-        return event;
-    }
+function setSettings (options) {
+    return Object.assign({}, defaults, options);
 }
 &nbsp;
 /**
- * Helper function to get process.env or default settings
+ * Read env file and return array of rows.
  *
- * @param {String} key
- * @param {Any} defaults
- * @returns {Any}
+ * @param {Object} settings
+ * @returns {Array} env rows
  */
-function get (key, defaults) {
-    let
-        val = process.env[key.toUpperCase()],
-        envType = typer.detect(val),
-        callback = arguments[arguments.length - 1];
+function readEnvFile (settings) {
+    return fs.readFileSync(settings.file, {encoding: settings.encoding}).split('\n');
+}
 &nbsp;
-    if (typeof callback === 'function') {
-        callback(val, key, defaults);
+/**
+ * Add envs to global process.env array
+ *
+ * @param {Array} row
+ */
+function setProcessEnv (row) {
+    if (row) {
+        let
+            env = row.match(/^([\w\.\-]+)=(.*)$/i),
+            key = env[1],
+            val = env[2];
+&nbsp;
+        process.env[key.toUpperCase()] = val;
     }
-    return val ? typer.cast(val, envType) : defaults || null;
 }
 &nbsp;</pre></td></tr>
 </table></pre>
@@ -190,7 +190,7 @@ function get (key, defaults) {
   generated by <a href="http://istanbul-js.org/" target="_blank">istanbul</a> at Wed Jun 29 2016 18:54:30 GMT+0200 (CEST)
 </div>
 </div>
-<script src="../prettify.js"></script>
+<script src="../../prettify.js"></script>
 <script>
 window.onload = function () {
         if (typeof prettyPrint === 'function') {
@@ -198,6 +198,6 @@ window.onload = function () {
         }
 };
 </script>
-<script src="../sorter.js"></script>
+<script src="../../sorter.js"></script>
 </body>
 </html>

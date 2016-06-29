@@ -1,7 +1,7 @@
 {
   "name": "dotenv-loader",
-  "version": "1.1.0",
-  "description": "Load environment variables from .env file, and set to process.env Array.",
+  "version": "1.2.0",
+  "description": "Dotenv-loader module helps setting environment variables from .env file on runtime.",
   "author": "Paweł Zadrożny <pawel.zny@gmail.com> (http://pawelzny.com/npm/env)",
   "scripts": {
     "test": "env NODE_ENV=test ./node_modules/.bin/mocha",
@@ -33,7 +33,6 @@
     "typer": "^1.1.0"
   },
   "devDependencies": {
-    "babel": "^6.5.2",
     "chai": "^3.5.0",
     "istanbul": "^0.4.4",
     "mocha": "^2.5.3",

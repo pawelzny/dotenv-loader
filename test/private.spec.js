@@ -1,14 +1,14 @@
 'use strict';
 
 const
-    env = require('../dotenv-loader'),
+    lib = require('../lib/dotenv-lib'),
     chai = require('chai'),
     assert = chai.assert;
 
 describe('dotenv-loader private methods', () => {
     describe("#_setSettings()", () => {
         it('should return object with only default values', () => {
-            let settings = env.__private._setSettings();
+            let settings = lib.setSettings();
 
             assert.isDefined(settings.file);
             assert.isDefined(settings.encoding);
@@ -23,7 +23,7 @@ describe('dotenv-loader private methods', () => {
                     file: ".test-env",
                     encoding: "unicode"
                 },
-                settings = env.__private._setSettings(options);
+                settings = lib.setSettings(options);
 
             assert.isDefined(settings.file);
             assert.isDefined(settings.encoding);
@@ -40,7 +40,7 @@ describe('dotenv-loader private methods', () => {
                     file: "./test/.test-env",
                     encoding: "utf8"
                 },
-                result = env.__private._readEnvFile(options),
+                result = lib.readEnvFile(options),
                 expectedLength = 8; // blank lines counted
 
             assert.isArray(result);
@@ -53,7 +53,7 @@ describe('dotenv-loader private methods', () => {
             let
                 row = "ROW_TEST_ENV=works fine";
 
-            env.__private._setProcessEnv(row);
+            lib.setProcessEnv(row);
 
             assert.isDefined(process.env['ROW_TEST_ENV']);
             assert.equal('works fine', process.env['ROW_TEST_ENV']);
@@ -69,7 +69,7 @@ describe('dotenv-loader private methods', () => {
             process.env[key] = before;
             assert.equal(before, process.env[key]);
 
-            env.__private._setProcessEnv(setRow);
+            lib.setProcessEnv(setRow);
             assert.equal(after, process.env[key]);
         });
     });
