@@ -57,6 +57,7 @@
         }],
         "no-multi-spaces": ["error"],
         "no-new": ["error"],
+        "no-unsafe-finally": 0,
         "no-new-func": ["error"],
         "no-new-wrappers": ["error"],
         "no-octal": ["error"],

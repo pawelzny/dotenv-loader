@@ -3,6 +3,7 @@
 const
     lib = require('./lib/dotenv-lib'),
     typer = require('typer'),
+    lastCallback = require('last-callback'),
     EventEmitter = require('events');
 
 module.exports = {load, get};
@@ -37,10 +38,8 @@ function get (key, defaults) {
     let
         val = process.env[key.toUpperCase()],
         envType = typer.detect(val),
-        callback = arguments[arguments.length - 1];
+        callback = lastCallback(...arguments);
 
-    if (typeof callback === 'function') {
-        callback(val, key, defaults);
-    }
+    callback(val, key, defaults);
     return val ? typer.cast(val, envType) : defaults || null;
 }
