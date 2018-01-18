@@ -72,5 +72,22 @@ describe('dotenv-loader private methods', () => {
             lib.setProcessEnv(setRow);
             assert.equal(after, process.env[key]);
         });
+
+        it('should set key and value properly for every case', () => {
+            let cases = [
+                {case: 'LTEST=123', key: 'LTEST', value: 123},
+                {case: 'L-TEST=test', key: 'L-TEST', value: 'test'},
+                {case: 'L_TEST=asdf', key: 'L_TEST', value: 'asdf'},
+                {case: 'L.TEST=0', key: 'L.TEST', value: 0},
+                {case: 'R TEST=345', key: 'R_TEST', value: '345'},
+                {case: 'low test=aaa', key: 'LOW_TEST', value: 'aaa'},
+                {case: '  left pad  = bbb', key: 'LEFT_PAD', value: 'bbb'},
+            ];
+
+            cases.forEach(function(case_) {
+                lib.setProcessEnv(case_.case);
+                assert.equal(process.env[case_.key], case_.value);
+            });
+        });
     });
 });
