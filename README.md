@@ -16,7 +16,7 @@ Dotenv-loader will parse synchronously your .env file, and set environment varia
 
 ## Requirements
 
-NodeJS >= 6.2.0
+NodeJS >= 8.9.0
 
 ## Instalation
 
