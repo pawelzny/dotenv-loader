@@ -12,6 +12,7 @@ module.exports = {load, get};
  * Load .env file and add key/value pairs to global process.env array
  *
  * @param {Object} options
+ * @returns {EventEmitter} event
  */
 function load (options) {
     let
@@ -31,15 +32,15 @@ function load (options) {
  * Helper function to get process.env or default settings
  *
  * @param {String} key
- * @param {Any} defaults
- * @returns {Any}
+ * @param {*} defaults
+ * @returns {*} environment value or default
  */
-function get (key, defaults) {
+function get (key, defaults=null) {
     let
-        val = process.env[key.toUpperCase()],
+        val = process.env[key],
         envType = typer.detect(val),
         callback = lastCallback(...arguments);
 
     callback(val, key, defaults);
-    return val ? typer.cast(val, envType) : defaults || null;
+    return val ? typer.cast(val, envType) : defaults;
 }

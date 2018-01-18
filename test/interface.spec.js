@@ -31,37 +31,30 @@ describe('dotenv-loader interface', () => {
   describe('#get()', () => {
     it('should parse .env and return value type of Boolean (true)', () => {
         assert.isTrue(env.get('TEST_BOOLEAN_TRUE'));
-        assert.isTrue(env.get('test_boolean_true'));
     });
 
     it('should parse .env and return value type of Boolean (false)', () => {
         assert.isFalse(env.get('TEST_BOOLEAN_FALSE'));
-        assert.isFalse(env.get('test_boolean_false'));
     });
 
     it('should parse .env and return value type of Number', () => {
         assert.isNumber(env.get('TEST_NUMBER'));
-        assert.isNumber(env.get('test_number'));
     });
 
     it('should parse .env and return value type of String', () => {
         assert.equal("this is test string", env.get('TEST_STRING'));
-        assert.equal("this is test string", env.get('test_string'));
     });
 
     it('should parse .env and return value type of Null when value was set to "undefined"', () => {
         assert.isNull(env.get('TEST_UNDEFINED'));
-        assert.isNull(env.get('test_undefined'));
     });
 
     it('should parse .env and return value type of Null when value was set to "null"', () => {
         assert.isNull(env.get('TEST_NULL'));
-        assert.isNull(env.get('test_null'));
     });
 
     it('should parse .env and return value type of Null when value has not been set', () => {
         assert.isNull(env.get('TEST_NOT_SET'));
-        assert.isNull(env.get('test_not_set'));
     });
 
     it('should parse .env and return default value when value has not been set', () => {
@@ -73,7 +66,7 @@ describe('dotenv-loader interface', () => {
 
     it('should throw an error when value has not been set', () => {
         try {
-            env.get('THIS_DO_NOT_EXISTS', function (val, key, defaults) {
+            env.get('THIS_DO_NOT_EXISTS', function (val) {
                 if (val === null) {
                     throw Error('Env variable not exists');
                 }
