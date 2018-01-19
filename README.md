@@ -1,12 +1,22 @@
-#Dotenv-loader v.1.2.1
+# Dotenv-loader v.2.0.0
+
+Load additional environmental variables from single .env file and manage them on runtime.
+With dotenv-loader you can easily access NodeJS environment variables from different sources.
 
 ## Description
 
-Dotenv-loader module helps setting environment variables from .env file on runtime.
-You do not need to preset environment variables when calling your script with terminal or supervisor.
+Variables are available from:
 
-Make sure, that dotenv-loader is required on the begining of your main script.
-Dotenv-loader will parse synchronously your .env file, and set environment variables to process.env array before booting App.
+* Environment created by NodeJS,
+* Exported in shell session,
+* Set by Apache/Nginx
+* Saved in custom .env file
+
+For what do I need .env file?
+It is the easiest way to store all kind of secrets and manage application state.
+For example when many developers works on one application, everyone can
+independently defined its own database connection, API keys and other
+secrets which should not be shared between developers and production.
 
 [![npm](https://img.shields.io/npm/l/dotenv-loader.svg?maxAge=2592000)]()
 [![npm](https://img.shields.io/npm/dt/dotenv-loader.svg?maxAge=2592000)]()
@@ -18,13 +28,28 @@ Dotenv-loader will parse synchronously your .env file, and set environment varia
 
 NodeJS >= 8.9.0
 
+<div style="color: red; font-weight: 700;">
+For NodeJS 6.x and 7.x use dotenv-loader version 1.2.1
+</div>
+
 ## Instalation
 
 With NPM:
 
-```javascript
+```shell
 npm install -S dotenv-loader
 ```
+
+For older NodeJS:
+
+```shell
+npm install -S dotenv-loader@1.2.1
+```
+
+# Usage
+
+Make sure, that dotenv-loader is required on the begining of your main script.
+Dotenv-loader will parse synchronously your .env file, and set environment variables to process.env array before booting App.
 
 ## Load environments
 
@@ -36,7 +61,7 @@ npm install -S dotenv-loader
 
 *.env file Example:*
 
-```javascript
+```text
 THROW_ERROS=false
 PAGE_ELEMENTS=100
 WELCOME_MSG=Hi there!
@@ -132,7 +157,15 @@ if (nodeEnv === 'development') {
 
 ## Contribution
 
-Feel free to Pull Request
+Did you find any bugs?
+Maybe this documentation has language mistakes?
+You have idea for great new feature?
+
+Create new issue and describe your point of view.
+I will do my best to meet all requests.
+
+This repository is open for changes and suggestions.
+I encourage you to write your own solution and make pull request.
 
 ## LICENSE
 The MIT License (MIT)

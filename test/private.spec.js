@@ -80,11 +80,11 @@ describe('dotenv-loader private methods', () => {
                 {case: 'L_TEST=asdf', key: 'L_TEST', value: 'asdf'},
                 {case: 'L.TEST=0', key: 'L.TEST', value: 0},
                 {case: 'R TEST=345', key: 'R_TEST', value: '345'},
-                {case: 'low test=aaa', key: 'LOW_TEST', value: 'aaa'},
-                {case: '  left pad  = bbb', key: 'LEFT_PAD', value: 'bbb'},
+                {case: 'low test=aaa', key: 'low_test', value: 'aaa'},
+                {case: '  left pad  = bbb', key: 'left_pad', value: 'bbb'},
             ];
 
-            cases.forEach(function(case_) {
+            cases.forEach(function (case_) {
                 lib.setProcessEnv(case_.case);
                 assert.equal(process.env[case_.key], case_.value);
             });
