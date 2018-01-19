@@ -21,7 +21,7 @@ secrets which should not be shared between developers and production.
 [![npm](https://img.shields.io/npm/l/dotenv-loader.svg?maxAge=2592000)]()
 [![npm](https://img.shields.io/npm/dt/dotenv-loader.svg?maxAge=2592000)]()
 [![node](https://img.shields.io/node/v/dotenv-loader.svg?maxAge=2592000)]()
-[![Maintenance](https://img.shields.io/maintenance/yes/2016.svg?maxAge=2592000)]()
+[![Maintenance](https://img.shields.io/maintenance/yes/2018.svg?maxAge=2592000)]()
 [![coverage](https://img.shields.io/badge/coverage-100%25-brightgreen.svg)]()
 
 ## Requirements
