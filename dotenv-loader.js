@@ -14,7 +14,7 @@ module.exports = {load, get};
  * @param {Object} options
  * @returns {EventEmitter} event
  */
-function load (options) {
+function load(options=null) {
     let
         settings = lib.setSettings(options),
         event = new EventEmitter();
@@ -24,6 +24,7 @@ function load (options) {
     } catch (err) {
         event.emit('error', err);
     } finally {
+        // noinspection ReturnInsideFinallyBlockJS, UnreachableCodeJS
         return event;
     }
 }
@@ -35,12 +36,9 @@ function load (options) {
  * @param {*} defaults
  * @returns {*} environment value or default
  */
-function get (key, defaults=null) {
-    let
-        val = process.env[key],
-        envType = typer.detect(val),
-        callback = lastCallback(...arguments);
+function get(key, defaults=null) {
+    let value = process.env[key];
 
-    callback(val, key, defaults);
-    return val ? typer.cast(val, envType) : defaults;
+    lastCallback(...arguments)(value, key, defaults);
+    return value ? typer.cast(value, typer.detect(value)) : defaults;
 }

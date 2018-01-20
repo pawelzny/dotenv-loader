@@ -2,19 +2,18 @@
 
 const
     lib = require('../lib/dotenv-lib'),
-    chai = require('chai'),
-    assert = chai.assert;
+    chai = require('chai');
 
 describe('dotenv-loader private methods', () => {
     describe("#_setSettings()", () => {
         it('should return object with only default values', () => {
             let settings = lib.setSettings();
 
-            assert.isDefined(settings.file);
-            assert.isDefined(settings.encoding);
+            chai.assert.isDefined(settings.file);
+            chai.assert.isDefined(settings.encoding);
 
-            assert.equal('.env', settings.file);
-            assert.equal('utf8', settings.encoding);
+            chai.assert.equal('.env', settings.file);
+            chai.assert.equal('utf8', settings.encoding);
         });
 
         it('should return object with custom values', () => {
@@ -25,11 +24,11 @@ describe('dotenv-loader private methods', () => {
                 },
                 settings = lib.setSettings(options);
 
-            assert.isDefined(settings.file);
-            assert.isDefined(settings.encoding);
+            chai.assert.isDefined(settings.file);
+            chai.assert.isDefined(settings.encoding);
 
-            assert.equal('.test-env', settings.file);
-            assert.equal('unicode', settings.encoding);
+            chai.assert.equal('.test-env', settings.file);
+            chai.assert.equal('unicode', settings.encoding);
         });
     });
 
@@ -43,8 +42,8 @@ describe('dotenv-loader private methods', () => {
                 result = lib.readEnvFile(options),
                 expectedLength = 8; // blank lines counted
 
-            assert.isArray(result);
-            assert.equal(expectedLength, result.length);
+            chai.assert.isArray(result);
+            chai.assert.equal(expectedLength, result.length);
         });
     });
 
@@ -55,8 +54,8 @@ describe('dotenv-loader private methods', () => {
 
             lib.setProcessEnv(row);
 
-            assert.isDefined(process.env['ROW_TEST_ENV']);
-            assert.equal('works fine', process.env['ROW_TEST_ENV']);
+            chai.assert.isDefined(process.env['ROW_TEST_ENV']);
+            chai.assert.equal('works fine', process.env['ROW_TEST_ENV']);
         });
 
         it('should overwrite key / value pair in process.env array', () => {
@@ -67,26 +66,37 @@ describe('dotenv-loader private methods', () => {
                 setRow = `${key}=${after}`;
 
             process.env[key] = before;
-            assert.equal(before, process.env[key]);
+            chai.assert.equal(before, process.env[key]);
 
             lib.setProcessEnv(setRow);
-            assert.equal(after, process.env[key]);
+            chai.assert.equal(after, process.env[key]);
         });
 
-        it('should set key and value properly for every case', () => {
-            let cases = [
-                {case: 'LTEST=123', key: 'LTEST', value: 123},
-                {case: 'L-TEST=test', key: 'L-TEST', value: 'test'},
-                {case: 'L_TEST=asdf', key: 'L_TEST', value: 'asdf'},
-                {case: 'L.TEST=0', key: 'L.TEST', value: 0},
-                {case: 'R TEST=345', key: 'R_TEST', value: '345'},
-                {case: 'low test=aaa', key: 'low_test', value: 'aaa'},
-                {case: '  left pad  = bbb', key: 'left_pad', value: 'bbb'},
-            ];
+        it('should throw when key is not defined', () => {
+            try {
+                lib.setProcessEnv("=no key on the left");
+            } catch (err) {
+                chai.assert.equal(err.message, "Environment KEY=VALUE pair for '=no key on the left' is corrupted.");
+            }
+        });
 
-            cases.forEach(function (case_) {
+        let cases = [
+            {case: 'STANDARD=1', key: 'STANDARD', value: '1'},
+            {case: 'WITH-HYPHEN=foo', key: 'WITH-HYPHEN', value: 'foo'},
+            {case: 'WITH_UNDERSCORE="bar"', key: 'WITH_UNDERSCORE', value: '"bar"'},
+            {case: 'WITH.DOT=true', key: 'WITH.DOT', value: 'true'},
+            {case: 'WHITE SPACE=null', key: 'WHITE SPACE', value: 'null'},
+            {case: 'lowercase=', key: 'lowercase', value: ''},
+            {case: '    left pad=abcd', key: 'left pad', value: 'abcd'},
+            {case: 'right pad    =xyz', key: 'right pad', value: 'xyz'},
+            {case: 'left pad value=    left pad', key: 'left pad value', value: 'left pad'},
+            {case: 'right pad value=right pad    ', key: 'right pad value', value: 'right pad'},
+        ];
+
+        cases.forEach(function (case_) {
+            it(`should set key and value for: ${case_.case}`, () => {
                 lib.setProcessEnv(case_.case);
-                assert.equal(process.env[case_.key], case_.value);
+                chai.assert.equal(process.env[case_.key], case_.value);
             });
         });
     });
