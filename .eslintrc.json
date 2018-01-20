@@ -332,10 +332,6 @@
       "warn",
       "always"
     ],
-    "space-before-function-paren": [
-      "warn",
-      "always"
-    ],
     "space-in-parens": [
       "error",
       "never"

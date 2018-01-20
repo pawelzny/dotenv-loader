@@ -21,6 +21,7 @@ secrets which should not be shared between developers and production.
 [![npm](https://img.shields.io/npm/l/dotenv-loader.svg?maxAge=2592000)]()
 [![npm](https://img.shields.io/npm/dt/dotenv-loader.svg?maxAge=2592000)]()
 [![node](https://img.shields.io/node/v/dotenv-loader.svg?maxAge=2592000)]()
+[![CircleCI](https://img.shields.io/circleci/project/github/pawelzny/dotenv-loader.svg)]()
 [![Maintenance](https://img.shields.io/maintenance/yes/2018.svg?maxAge=2592000)]()
 [![coverage](https://img.shields.io/badge/coverage-100%25-brightgreen.svg)]()
 
@@ -158,8 +159,11 @@ if (nodeEnv === 'development') {
 ## Contribution
 
 Did you find any bugs?
+
 Maybe this documentation has language mistakes?
+
 You have idea for great new feature?
+
 
 Create new issue and describe your point of view.
 I will do my best to meet all requests.
