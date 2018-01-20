@@ -1,18 +1,20 @@
-# Dotenv-loader v.2.0.0
+# Dotenv-loader v2.0.1
 
-Load additional environmental variables from single .env file and manage them on runtime.
-With dotenv-loader you can easily access NodeJS environment variables from different sources.
+Load additional environmental variables from single .env file
+and manage them on runtime.
+With dotenv-loader you can easily access NodeJS environment
+variables from different sources.
 
 ## Description
 
 Variables are available from:
 
 * Environment created by NodeJS,
-* Exported in shell session,
-* Set by Apache/Nginx
-* Saved in custom .env file
+* Set for shell session,
+* Saved in custom .env file,
 
 For what do I need .env file?
+
 It is the easiest way to store all kind of secrets and manage application state.
 For example when many developers works on one application, everyone can
 independently defined its own database connection, API keys and other
@@ -33,7 +35,7 @@ NodeJS >= 8.9.0
 For NodeJS 6.x and 7.x use dotenv-loader version 1.2.1
 </div>
 
-## Instalation
+## Installation
 
 With NPM:
 
@@ -49,93 +51,86 @@ npm install -S dotenv-loader@1.2.1
 
 # Usage
 
-Make sure, that dotenv-loader is required on the begining of your main script.
-Dotenv-loader will parse synchronously your .env file, and set environment variables to process.env array before booting App.
+Make sure, that dotenv-loader is invoke before main script.
+Dotenv-loader will parse synchronously your `.env` file,
+and set environment variables to `process.env` array before booting App.
 
 ## Load environments
 
 `env.load([options]);`
 
-* @param options {Object} An optional object with `file` and `encoding` propertis
+* @param options {Object} An optional object with `file` and `encoding`
 * @return {EventEmitter} emits 'error' event **since v.1.1.0**
 
-
-*.env file Example:*
+*.env file Example with all recommended formats:*
 
 ```text
-THROW_ERROS=false
-PAGE_ELEMENTS=100
 WELCOME_MSG=Hi there!
+SINGLE=word
+WITH-HYPHEN=foo
+WITH.DOT=true
+WHITE SPACE=allowed
+lowercase=works fine
+spaces between = and value
 ```
 
-Every white character will be included into value.
-There is no need to put strings in quotes. Quotes will be included as part of actual string.
+There is no need to put strings in quotes.
+All quote characters on the right hand side will be included to string itself.
 
-On the begining of your main script require dotenv-loader and call `.load()` method:
+For example:
+```text
+SECRET = "this is secret string"
+```
+
+Will return as: `'"this is secret string"'`
+
+At the top of your main script, before application start,
+call `.load()` method to set additional
+environments from `.env` file.
 
 ```javascript
 const
     optionalSettings = {
         file: "./other/path/to/.env", // default: .env
-        encoding: "unicode" // default: utf8
+        encoding: "unicode", // default: utf8
     },
     env = require('dotenv-loader');
 
 env.load(optionalSettings).on('error', (err) => console.log(err));
-// Your environment variables are now available globally.
 ```
-
-Since v.1.1.0 Loader emits "error" event when environment file parsing has failed.
-It may crash your app because there is no certainty that all environment variables was properly set to process.env
-
-You should properly handle this kind of failure.
 
 ## Get environments
 
 `env.get(key[, default][, callback]);`
 * @param key {String} environment variable key
-* @param default {String} an optional default value if variable was not set
+* @param default {*} an optional default value if variable was not set
 * @param callback {Function} an optional callback function as last parameter
 * @return {Any} environment value
 
 Optional callback function takes three parameters:
 
-* @param val {Any} value from environment variable
+* @param val {*} value from environment variable
 * @param key {String} variable key
-* @param defaults {Any} value passed as default fallback
+* @param defaults {*} value passed as default fallback
 
 ```javascript
 const
     env = require('dotenv-loader'),
-    myVariable = env.get('WELCOME_MSG', 'Or default value');
-
-console.log(myVariable); // Hi there!
+    myVariable = env.get('WELCOME_MSG', 'Hi!');
 ```
-
-You can still get environment variables straight from process.env
-
-```javascript
-process.env['WELCOME_MSG']; // Hi there!
-process.env.WELCOME_MSG; // Hi there!
-```
-
-All your variable keys will be normalized to uppercase, but when you use env.get() method you can use upper and lower case.
 
 ## Throw error if environment variable does not exist
 
-You can pass callback function as last parameter. It will be called asynchronously, and still return a value.
+Method `.get()` takes optional callback as last argument.
 
 ```javascript
 let
     val = env.get('NOT_EXIST', 'default val', (val, key, defaults) => {
-        console.log(val); // null
-        console.log(key); // NOT_EXIST
-        console.log(defaults); // default val
-
+        console.log(key, val, defaults);
         if (val === null) {
             throw Error('Env variable does not exist');
         }
-    }); // throws [Error: Env variable does not exist']
+    });
 ```
 
 ## Full Example
@@ -144,19 +139,41 @@ let
 const env = require('dotenv-loader');
 env.load().on('error', (err) => throw Error(err));
 
-// Rest of your code
-
-let nodeEnv = env.get('NODE_ENV', (val) => {
-    console.log('Current environment is: %s', val)
-});
-
-if (nodeEnv === 'development') {
+if (env.get('NODE_ENV') === 'development') {
     console.log('I am in development mode');
 }
 
 ```
 
-## Contribution
+# Changelog
+
+## v2.0.1 2018-01-20
+
+Goal: Minor bugs fix.
+
+**Patch:**
+
+- Removed unnecessary whitespace replacement on variable parsing,
+- Protection against corrupted .env key=value pair,
+- More test cases for .env parser,
+
+## v2.0.0 2018-01-19
+
+Goal: Upgrade to NodeJS 8.x and remove normalization for more flexibility.
+
+**Major:**
+
+- Require NodeJS>=8.9,
+- Allow for lower case variable names (will not normalize to upper case),
+- Trim keys and values from .env file on load,
+
+**Minor:**
+
+- Allow for spaces in variable keys (will be normalize to underscore),
+- Allow for white spaces before and after equal character
+  for example: `ENV_KEY = env value`,
+
+# Contribution
 
 Did you find any bugs?
 
@@ -171,6 +188,6 @@ I will do my best to meet all requests.
 This repository is open for changes and suggestions.
 I encourage you to write your own solution and make pull request.
 
-## LICENSE
+# LICENSE
 The MIT License (MIT)
 Copyright (c) 2016 Paweł Zadrożny
