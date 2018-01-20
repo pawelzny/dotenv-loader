@@ -243,8 +243,7 @@
     ],
     "id-blacklist": [
       "warn",
-      "e",
-      "cb"
+      "e"
     ],
     "key-spacing": [
       "warn",
@@ -269,10 +268,6 @@
     ],
     "new-parens": [
       "error"
-    ],
-    "newline-after-var": [
-      "warn",
-      "always"
     ],
     "no-mixed-spaces-and-tabs": [
       "warn",
@@ -323,16 +318,6 @@
         "overrides": {
           "?": "ignore",
           ":": "ignore"
-        }
-      }
-    ],
-    "require-jsdoc": [
-      "warn",
-      {
-        "require": {
-          "FunctionDeclaration": true,
-          "MethodDefinition": true,
-          "ClassDeclaration": false
         }
       }
     ],
