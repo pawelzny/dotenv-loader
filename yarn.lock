@@ -671,9 +671,9 @@ kind-of@^3.0.2:
   dependencies:
     is-buffer "^1.1.5"
 
-last-callback@1.0.3:
-  version "1.0.3"
-  resolved "https://registry.yarnpkg.com/last-callback/-/last-callback-1.0.3.tgz#bad826c18f1df06b0dda5849f8fd27f61aaf7cf4"
+last-callback@2.0.0:
+  version "2.0.0"
+  resolved "https://registry.yarnpkg.com/last-callback/-/last-callback-2.0.0.tgz#72544811dc544a4264e4e867b92814ba71c2a113"
 
 lazy-cache@^1.0.3:
   version "1.0.4"

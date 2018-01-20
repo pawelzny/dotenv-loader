@@ -1,6 +1,6 @@
 {
   "name": "dotenv-loader",
-  "version": "2.0.0",
+  "version": "2.0.1",
   "description": "Load additional environmental variables from single .env file and manage them on runtime.",
   "author": "Paweł Zadrożny <pawel.zny@gmail.com> (http://pawelzny.com/)",
   "scripts": {
@@ -31,7 +31,7 @@
     "node": ">=8.9.0"
   },
   "dependencies": {
-    "last-callback": "1.0.3",
+    "last-callback": "2.0.0",
     "typer": "1.1.0"
   },
   "devDependencies": {
